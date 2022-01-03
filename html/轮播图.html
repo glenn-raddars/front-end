@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    #outer{
+        width: 741px;
+        height: 455px;
+        margin: 50px auto;
+        background-color: greenyellow;
+        padding: 10px 0;
+        position: relative;
+        /* 裁剪溢出的部分 */
+        overflow: hidden;
+    }
+    #imglist{
+        list-style: none;
+        
+        /* 相对于父元素定位 */
+        position: absolute;
+    }
+    #imglist li{
+        /* 设置浮动 */
+        float: left;
+        margin: 0 10px;
+    }
+    #navDiv{
+        /* 开启绝对定位 */
+        position: absolute;
+        bottom: 10px;
+    }
+    #navDiv a{
+        /* 设置超链接 */
+        /* 全体向左浮动，开启浮动的同时变成块元素 */
+        float: left;
+        width: 15px;
+        height: 15px;
+        background-color: red;
+        margin: 0 5px;
+        /* 设置透明 */
+        opacity: 0.5;
+    }
+    /* 设置鼠标移入超链接效果 */
+    #navDiv a:hover{
+        background-color: black;
+    }
+</style>
+
+<script src="JS\tools.js"></script>
+<script>
+    window.onload = function(){
+        // 设置导航按钮居中
+        var navDiv = document.getElementById("navDiv");
+        var outer = document.getElementById("outer");
+        var imglist = document.getElementById("imglist");
+        var li = document.getElementsByTagName("li");
+
+        imglist.style.width = 741*li.length + "px";
+        navDiv.style.left = (outer.offsetWidth - navDiv.offsetWidth)/2 + "px";//offsetwidth包括内边距和边框，不包括外边距
+        
+        //设置默认图片对应超链接为黑色
+        var index = 0;//图片索引
+        var allA = document.getElementsByTagName("a");
+        allA[index].style.backgroundColor = "black";
+        
+        // 设置点击超链接切换图片
+        for(var i=0;i<allA.length;i++){
+            allA[i].num = i;//给每个超链接接一个标识元素
+
+            allA[i].onclick = function(){
+                clearInterval(timer);//开始时关闭定时器
+                index = this.num;
+                //切换图片
+                //imglist.style.left = index*(-li.offsetWidth-20) + "px";
+                //使用move函数来移动
+                move(imglist,"left",index*(-741),60,function(){
+                    atuochange();
+                });
+
+                setA();
+            };
+        }
+
+        atuochange();
+
+        // 设置超链接颜色的函数
+        function setA(){
+            if(index >= li.length-1){
+                index = 0;
+                //通过设置CSS，砸他放最后一张图片的时候瞬间变成第一张图片
+                imglist.style.left = 0;
+            }
+
+            //先将每个超链接的颜色都变成默认样式
+            for(var i=0;i<allA.length;i++){
+                allA[i].style.backgroundColor = "";
+            }
+            // 在将选中图片的对应超链接变成黑色
+            allA[index].style.backgroundColor = "black";
+        }
+
+        var timer;
+        //自动切换轮播图 
+        function atuochange(){
+            timer = setInterval(function(){
+                index++;
+
+                index %= li.length;
+
+                move(imglist,"left",index*(-741),60,function(){
+                    setA();
+                })
+            }, 3000);
+        }
+
+        console.log(li.length);
+    }
+</script>
+<body>
+    <div id="outer">
+        <!--创建用来放置图片的ul-->
+        <ul id="imglist">
+            <li><img src="img\focus1.jpg"></li>
+            <li><img src="img\focus2.jpg"></li>
+            <li><img src="img\focus3.jpg"></li>
+            <li><img src="img\focus4.jpg"></li>
+            <li><img src="img\focus1.jpg"></li>
+        </ul>
+        <!-- 设置导航按钮 -->
+        <div id="navDiv">
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+            <a href="javascript:;"></a>
+        </div>
+    </div>
+</body>
+</html>

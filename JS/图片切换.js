@@ -1,5 +1,5 @@
-window.onload = function(){
-    //使其能够在网页加载出来之后在运行js代码
+window.onload = function(){//使其能够在网页加载出来之后在运行js代码
+    
     var prev = document.getElementById("prev");
     var after = document.getElementById("after");
     

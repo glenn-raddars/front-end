@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数柯里化</title>
+</head>
+<body>
+    <!--  准备容器 -->
+    <div id="test1"></div>
+    
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../../所需文件/核心文件/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM --> 
+    <script type="text/javascript" src="../../所需文件/核心文件/react-dom.development.js"></script>
+    <!-- 用来翻译jsx -->
+    <script type="text/javascript" src="../../所需文件/核心文件/babel.min.js"></script>
+    <!-- 用来限制传入props的数据类型 -->
+    <script type="text/javascript" src="../../所需文件/核心文件/prop-types.js"></script>
+
+    <script type="text/babel">
+        //创建类式组件
+        class Login extends React.Component{
+            /*
+                高阶函数：如果一个函数如何下面2个规范中的的其中一个，那该函数被称为高阶函数
+                    1.若A函数，接受的参数是一个函数，那么A为高阶函数
+                    2.若A函数，调用的返回值已然是一个函数，那么A是高阶函数
+                    常见的高阶函数：Promise，setTimeout，arr.map（）
+                
+                函数柯里化：通过函数调用继续返回函数的方式，实现多次接收参数最后统一处理的函数编码形式。
+            */
+            //state初始化
+            state = {
+                username:'',
+                password:''
+            }
+            //写一个方法阻止表单提交
+            handleSubmit = (event)=>{
+                event.preventDefault();//阻止表单提交，preventDefalut这个是专门阻止默认行为的
+                const {username,password} = this.state;
+                alert(`你输入的用户名是：${username},你输入的密码是：${password}`);//哪个是反单引号，不是单引号！！！！（字符串匹配）
+            }
+            //将input框中的值送入state属性中的方法
+            saveFormData = (dataType)=>{
+                return (event)=>{
+                    this.setState({[dataType]:event.target.value});
+                    // 这就是函数的柯里化
+                }
+            }
+            /*这其实也就是一个受控组件实例*/
+            render(){
+                return(
+                    <form onSubmit = {this.handleSubmit}>
+                        用户名：<input onChange={this.saveFormData('username')/*绑定输入框改变事件，输入框一变，同步state属性*/} type="text" name="username"/>
+                        密码：<input onChange={this.saveFormData('password')/*这里绑定的其实是saveFormData这个函数的返回函数，
+                        并向那个函数中传入了这个标签的event属性，是他每次调用的是返回函数*/} type="password" name="password"/>
+                        <button>登录</button>
+                    </form>
+                )
+            }
+        }
+        //渲染组建到页面
+        ReactDOM.render(<Login/>,document.getElementById('test1'));
+    </script>
+</body>
+</html>

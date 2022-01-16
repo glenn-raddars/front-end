@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>类式组件</title>
+</head>
+<body>
+    <!--  准备容器 -->
+    <div id="test"></div>
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../../所需文件/核心文件/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM --> 
+    <script type="text/javascript" src="../../所需文件/核心文件/react-dom.development.js"></script>
+    <!-- 用来翻译jsx -->
+    <script type="text/javascript" src="../../所需文件/核心文件/babel.min.js"></script>
+
+    <script type="text/babel">
+        //创建类式组件
+        class Weather extends React.Component{
+            /*类组件一定是继承自React.component，一定要有render方法，里面一定要返回东西*/
+            constructor(props){//初始化一定得传一个参数props
+                super(props);
+                this.state = {isHot:false};//state一定得是一个类
+                this.changeWeather = this.changeWeather.bind(this);//这个地方是构造一个新的函数，把原来的changeWeather中的this用bind强行改变成实例，
+                //此时在调用changeWeather就是新的this为实例对象的函数了，解决了thisundifined的问题
+            }
+            render(){
+                //console.log(this);
+                const {isHot} = this.state;
+                return <h1 onClick = {this.changeWeather}>今天天气真{isHot? '炎热':'凉爽'}</h1>;//React中绑定事件最好在标签内部进行绑定
+            }
+            changeWeather(){
+                //changeWeather放在Weather的原型对象上，供实例使用
+                //由于changeWeather是作为onclick的回调函数，不是实例调用，而是直接调用
+                //类中的方法开启了严格模式，所以changeWeather中的this默认为undefined
+
+                //如歌更新state，必须使用一个API，setState
+                const isHot = this.state.isHot;
+                this.setState({isHot:!isHot});//这种更新是一种合并更新，而不是替换更新
+            }
+        }
+        //渲染组建到页面
+        ReactDOM.render(<Weather/>/*这就是在创建组件的实例对象*/,document.getElementById('test'));//这里只能传入标签，名称要大写才会被认为是组件
+    
+    </script>
+</body>
+</html>

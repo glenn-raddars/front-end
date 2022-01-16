@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数式组件</title>
+</head>
+<body>
+    <!--  准备容器 -->
+    <div id="test"></div>
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../../所需文件/核心文件/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM --> 
+    <script type="text/javascript" src="../../所需文件/核心文件/react-dom.development.js"></script>
+    <!-- 用来翻译jsx -->
+    <script type="text/javascript" src="../../所需文件/核心文件/babel.min.js"></script>
+
+    <script type="text/babel">
+        //创建函数式组件
+        function Demo(){
+            console.log(this);//为undefined
+            return <h1>我是函数式组件【适用于简单模式】</h1>;
+        }
+        //渲染组建到页面
+        ReactDOM.render(<Demo/>,document.getElementById('test'));//这里只能传入标签，名称要大写才会被认为是组件
+    </script>
+</body>
+</html>

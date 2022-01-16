@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>refs</title>
+</head>
+<body>
+    <!--  准备容器 -->
+    <div id="test1"></div>
+    <div id="test2"></div>
+    <div id="test3"></div>
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../../所需文件/核心文件/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM --> 
+    <script type="text/javascript" src="../../所需文件/核心文件/react-dom.development.js"></script>
+    <!-- 用来翻译jsx -->
+    <script type="text/javascript" src="../../所需文件/核心文件/babel.min.js"></script>
+    <!-- 用来限制传入props的数据类型 -->
+    <script type="text/javascript" src="../../所需文件/核心文件/prop-types.js"></script>
+
+    <script type="text/babel">
+        //创建类式组件
+        class Demo extends React.Component{
+            //展示左侧输入框的数据
+            showLeft = ()=>{
+                const {current} = this.Ref1;
+                alert(current.value);
+            }
+            //展示右侧输入框的数据
+            showRight = ()=>{
+                const {current} = this.Ref2;
+                alert(current.value);
+            }
+            //构建Ref,每一个标签都要创建一个自身的createRef
+            Ref1 = React.createRef();
+            Ref2 = React.createRef();
+            render(){
+                //console.log(this);
+                return(
+                    <div>
+                        <input ref = {this.Ref1}/**/ type="text" placeholder = "点击按钮提示数据"/>&nbsp;
+                        <button onClick = {this.showLeft}>提示左侧输入框数据</button>&nbsp;
+                        <input onBlur = {this.showRight/*这里的onBlur函数就是光标移出事件*/} ref = {this.Ref2} type="text" placeholder = "失去焦点提示数据"/>
+                    </div>
+                )
+            }
+        }
+        //渲染组建到页面
+        ReactDOM.render(<Demo />,document.getElementById('test1'));
+    </script>
+</body>
+</html>

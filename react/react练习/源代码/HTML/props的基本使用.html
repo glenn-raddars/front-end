@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>props的基本使用</title>
+</head>
+<body>
+    <!--  准备容器 -->
+    <div id="test1"></div>
+    <div id="test2"></div>
+    <div id="test3"></div>
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../../所需文件/核心文件/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM --> 
+    <script type="text/javascript" src="../../所需文件/核心文件/react-dom.development.js"></script>
+    <!-- 用来翻译jsx -->
+    <script type="text/javascript" src="../../所需文件/核心文件/babel.min.js"></script>
+    <!-- 用来限制传入props的数据类型 -->
+    <script type="text/javascript" src="../../所需文件/核心文件/prop-types.js"></script>
+
+    <script type="text/babel">
+        //创建类式组件
+        class Person extends React.Component{
+            //开始进行对输入props的限制
+            static propTypes = {
+                name: PropTypes.string.isRequired,//说明名字是必须的，并且为字符串类型
+                age: PropTypes.number,
+                sex: PropTypes.string
+            }
+            //给props属性默认值
+            static defaultProps = {
+                sex: "不男不女",
+                age:18
+            }
+
+            render(){//对props进行解构赋值
+                const {name,age,sex} = this.props;
+
+                return(
+                    <ul>
+                        <li>姓名：{name}</li>
+                        <li>年龄：{age}</li>
+                        <li>性别：{sex}</li>
+                    </ul>
+                )
+            } 
+        }
+        
+        //渲染组建到页面
+        ReactDOM.render(<Person name = "jerry" age = {18} sex = "男"/>,document.getElementById('test1'));
+        ReactDOM.render(<Person name = "marry" age = {19} sex = "女"/>,document.getElementById('test2'));
+        const p = {name:"Ben",age:18,sex:"男"};
+        ReactDOM.render(<Person {...p}/>,document.getElementById('test3'));
+        /*一般而言，展开运算符...是不能展开类的，但是在jsx下，在组件标签里，能通过{...类}的方式展开对象，并赋值给类的props属性中*/
+    </script>
+</body>
+</html>

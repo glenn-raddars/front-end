@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件生命周期</title>
+</head>
+<body>
+    <!--  准备容器 -->
+    <div id="test1"></div>
+    
+
+    <!-- 引入核心库 -->
+    <script type="text/javascript" src="../../../所需文件/核心文件/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM --> 
+    <script type="text/javascript" src="../../../所需文件/核心文件/react-dom.development.js"></script>
+    <!-- 用来翻译jsx -->
+    <script type="text/javascript" src="../../../所需文件/核心文件/babel.min.js"></script>
+    <!-- 用来限制传入props的数据类型 -->
+    <script type="text/javascript" src="../../../所需文件/核心文件/prop-types.js"></script>
+
+    <script type="text/babel">
+        // componentDidMount componentWillUnmount这两个函数被称为生命周期回调函数，或者生命周期钩子函数
+        //创建类式组件
+        class Life extends React.Component{
+            //给状态使字体渐变
+            state = {opacity:1};
+
+            //卸载组件
+            death = ()=>{
+                ReactDOM.unmountComponentAtNode(document.getElementById('test1'));//使用unmountComponentAtNode函数卸载组件DOM
+            }
+
+            //组件挂载完毕后调用
+            componentDidMount(){
+                //让字体逐渐变淡，然后消失不见，之后有重复，消失时间是2秒钟
+                this.timer =  setInterval(() => {
+                    //获取原状态
+                    var {opacity} = this.state;
+                    //每次-0.1
+                    opacity -= 0.1;
+                    if(opacity <= 0){
+                        opacity = 1;
+                    }
+                    this.setState({opacity:opacity});
+                }, 200/*每200毫秒秒执行一次*/);
+            }
+
+            //组件将要被卸载的时候调用
+            componentWillUnmount(){
+                clearInterval(this.timer);
+            }
+
+            //初始化渲染，状态更新之后调用
+            render(){
+                return(
+                    <div>
+                        <h2 style={{opacity:this.state.opacity}}>React学不会怎么办?</h2>
+                        <button onClick={this.death}>不活了</button>
+                    </div>
+                )
+            }
+        }
+        //渲染组建到页面
+        ReactDOM.render(<Life/>,document.getElementById('test1'));
+    </script>
+</body>
+</html>

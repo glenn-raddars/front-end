@@ -3,7 +3,7 @@ import CountUI from '../../component/Count'
 // 引入connect用于连接UI组件库与store
 import {connect} from 'react-redux'
 //使用connect()()创建并连接一个Count的容器组件，右边链接UI组件。
-import {createIncreamentAction , createDecreamentAction} from '../../redux/Count_action'
+import {createIncreamentAction , createDecreamentAction} from '../../redux/actions/Count'
 
 
 /*
@@ -13,7 +13,7 @@ import {createIncreamentAction , createDecreamentAction} from '../../redux/Count
  */
 
 function mapStateToProps(state){
-    return {count:state}
+    return {count:state.count,personNum:state.person.length}
 }
 
 /*

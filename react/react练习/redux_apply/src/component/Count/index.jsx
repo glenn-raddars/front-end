@@ -32,7 +32,7 @@ export default class Count extends Component {
   render() {
     return (
         <div>
-            <h1>当前求和为：{this.props.count}</h1>
+            <h1>当前求和为：{this.props.count},总人数为{this.props.personNum}</h1>
             <select ref={(c)=>{this.selectEM = c;}} >
                 <option value="1">1</option>
                 <option value="2">2</option>
